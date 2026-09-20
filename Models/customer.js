@@ -27,12 +27,41 @@ const customerSchema = new Schema({
 const Order = mongoose.model("Order", orderSchema);
 const Customer = mongoose.model("Customer", customerSchema);
 
+//function
 const findCustomer = async() => {
     let result = await Customer.find({}).populate("orders");
-    console.log(result);
+    console.log(result[0]);
 };
 
-findCustomer();
+const addCust = async () => {
+    let newCust = new Customer({
+        name: "karn Arjun"
+    });
+
+    let newOrder = new Order({
+        item: "pizza",
+        price: 250
+    });
+
+    newCust.orders.push(newOrder);
+
+    await newOrder.save();
+    await newCust.save();
+
+    console.log("added new customer");
+};
+
+const delCust = async () => {
+    let data = await Customer.findByIdAndDelete("6aaffd2b1f64fbc66039cdb9");
+    console.log(data);
+};
+
+delCust();
+
+// addCust();
+
+
+
 // const addCustomers = async() => {
 //     let cust1 = new Customer({
 //         name: "Rahul Kumar",
